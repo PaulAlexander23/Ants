@@ -4,8 +4,10 @@
 ant::ant(){
 	position.x = rand() / double(RAND_MAX) * 1280;
 	position.y = rand() / double(RAND_MAX) * 800;
-	//direction = 0;
-	direction = rand() / double(RAND_MAX) * 2 * M_PI;
+	double randa;
+	randa = 2 * M_PI * rand() / double(RAND_MAX);
+	velocity.x = cos(randa);
+	velocity.y = sin(randa);
 	yard = 1;
 	food = false;
 }
@@ -13,62 +15,57 @@ ant::ant(){
 ant::ant(short x, short y){
 	position.x = x;
 	position.y = y;
-	//direction = 0;
-	direction = rand() / double(RAND_MAX) * 2 * M_PI;
+	double randa;
+	randa = 2 * M_PI * rand() / double(RAND_MAX);
+	velocity.x = cos(randa);
+	velocity.y = sin(randa);
 	yard = 1;
 	food = false;
 }
 
 void ant::timeStep(vector detv){
-	changeDirection(detv);
+	changeVelocity(detv);
 	move();
 }
 
 void ant::move(){
-	position.x += yard * cos(direction);
-	position.y += yard * sin(direction);
+	position.x += yard * velocity.x;
+	position.y += yard * velocity.y;
 
 	if (position.x < 0 || position.y < 0 || position.x > 1280 || position.y > 800){
 		position.x = 320;
 		position.y = 200;
 	}
 
-	if (position.x > 1000 && position.y > 100 && position.x > 1100 && position.y < 200 && food == false){
+	if (position.x > 80 && position.y > 80 && position.x > 120 && position.y < 120 && food == false){
 		food = true;
+	}
+
+	if (position.x > 780 && position.y > 80 && position.x > 820 && position.y < 120 && food == true){
+		food = false;
 	}
 
 }
 
-void ant::changeDirection(vector detv){
-	double deta; //Deterministic angle
-	double randa; //Random angle
-	randa = rand() / double(RAND_MAX) * 2 * M_PI;
+void ant::changeVelocity(vector detv){
+	vector randv;
+	double randa;
+	randa = 2 * M_PI * rand() / double(RAND_MAX);
+	randv.x = 0.6 * cos(randa);
+	randv.y = 0.6 * sin(randa);
 
-	double h = 1; //
+	double h = 0.1;
+	double w = 0.2;
 
-	/*if (detv.x == 0){
-		if (detv.y == 0){
-			direction = fmod(randa, 2.0 * M_PI);
-			return;
-		}
-		else if (detv.y > 0){
-			deta = -M_PI / 2;
-		}
-		else{
-			deta = M_PI / 2;
-		}
-	}
-	else */
-	if (detv.x < 0){
-		deta = atan((detv.y) / (detv.x)) + M_PI;
-	}
-	else{
-		deta = fmod(atan((detv.y) / (detv.x)), 2 * M_PI);
-	}
+	velocity.x += h * w * detv.x + sqrt(h) * (1 - w) * randv.x;
+	velocity.y += h * w * detv.y + sqrt(h) * (1 - w) * randv.y;
 
-	//direction = fmod((deta + (randa - M_PI)) / 2, 2 * M_PI);
+	double norm;
+	norm = sqrt(pow(velocity.x, 2) + pow(velocity.y, 2));
 
-	direction = fmod(direction + (deta-direction)*h, 2 * M_PI);
+	velocity.x = velocity.x / norm;
+	velocity.y = velocity.y / norm;
+
 }
 
 int ant::draw(SDL_Renderer *renderer){

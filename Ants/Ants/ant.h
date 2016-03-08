@@ -9,10 +9,11 @@ private:
 public:
 	bool food;
 	vector position;
+	vector velocity;
 	ant();
 	ant(short x, short y);
 	void timeStep(vector detv);
-	void changeDirection(vector detv);
+	void changeVelocity(vector detv);
 	void move();
 	int draw(SDL_Renderer *renderer);
 };
