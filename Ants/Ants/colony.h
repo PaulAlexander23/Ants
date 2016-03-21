@@ -12,7 +12,7 @@ public:
 
 private:
 	ant ants[100];
-	double grid[320][200];
+	float grid[2][320][200];
 	double x[320];
 	double y[200];
 

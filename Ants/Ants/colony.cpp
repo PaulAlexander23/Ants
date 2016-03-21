@@ -5,10 +5,11 @@ colony::colony()
 {
 	for (int i = 0; i < 320; i++){
 		for (int j = 0; j < 200; j++){
-			grid[i][j] = -(pow((double(i) - 100), 2) + pow((double(j) - 100), 2));
-			y[j] = 4*j;
+			grid[0][i][j] = 1000*exp(-(pow((double(i) -  50), 2) + pow((double(j) - 150), 2))/10000);
+			grid[1][i][j] = 1000*exp(-(pow((double(i) - 270), 2) + pow((double(j) -  50), 2))/10000);
+			y[j] = 4 * j;
 		}
-		x[i] = 4*i;
+		x[i] = 4 * i;
 	}
 
 }
@@ -39,11 +40,24 @@ void colony::timeStep(){
 			detv.y = -1;
 		}
 		else{
-			detv.x = (grid[j + 1][k] - grid[j][k]) / (x[1] - x[0]);
-			detv.y = (grid[j][k + 1] - grid[j][k]) / (x[1] - x[0]);
+			switch (ants[i].food)
+			{
+			case true:
+				detv.x = (grid[0][j + 1][k] - grid[0][j][k]) / (x[1] - x[0]);
+				detv.y = (grid[0][j][k + 1] - grid[0][j][k]) / (y[1] - y[0]);
+				break;
+			case false:
+				detv.x = (grid[1][j + 1][k] - grid[1][j][k]) / (x[1] - x[0]);
+				detv.y = (grid[1][j][k + 1] - grid[1][j][k]) / (y[1] - y[0]);
+				break;
+			default:
+				break;
+			}
+
+
 		}
 
-		
+
 		ants[i].timeStep(detv);
 	}
 }

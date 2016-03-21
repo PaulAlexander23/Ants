@@ -9,7 +9,7 @@ ant::ant(){
 	velocity.x = cos(randa);
 	velocity.y = sin(randa);
 	yard = 1;
-	food = false;
+	food = rand() % 2;
 }
 
 ant::ant(short x, short y){
@@ -20,7 +20,7 @@ ant::ant(short x, short y){
 	velocity.x = cos(randa);
 	velocity.y = sin(randa);
 	yard = 1;
-	food = false;
+	food = rand() % 2;
 }
 
 void ant::timeStep(vector detv){
@@ -37,12 +37,18 @@ void ant::move(){
 		position.y = 200;
 	}
 
-	if (position.x > 80 && position.y > 80 && position.x > 120 && position.y < 120 && food == false){
-		food = true;
-	}
-
-	if (position.x > 780 && position.y > 80 && position.x > 820 && position.y < 120 && food == true){
-		food = false;
+	switch (food)
+	{
+	case true:
+		if (position.x > 0 && position.y > 520 && position.x < 280 && position.y < 800){
+			food = false;
+		}
+		break;
+	case false:
+		if (position.x > 1000 && position.y > 120 && position.x < 1160 && position.y < 280){
+			food = true;
+		}
+		break;
 	}
 
 }
@@ -54,8 +60,8 @@ void ant::changeVelocity(vector detv){
 	randv.x = 0.6 * cos(randa);
 	randv.y = 0.6 * sin(randa);
 
-	double h = 0.1;
-	double w = 0.2;
+	double h = 1;
+	double w = 0.5;
 
 	velocity.x += h * w * detv.x + sqrt(h) * (1 - w) * randv.x;
 	velocity.y += h * w * detv.y + sqrt(h) * (1 - w) * randv.y;
@@ -75,6 +81,15 @@ int ant::draw(SDL_Renderer *renderer){
 	rect.w = 2;
 	rect.h = 2;
 
-	SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);
+	switch (food)
+	{
+	case true:
+		SDL_SetRenderDrawColor(renderer, 0, 200, 0, 255);
+		break;
+	case false:
+		SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);
+		break;
+	}
+
 	return(SDL_RenderFillRect(renderer, &rect));
 }
