@@ -40,14 +40,24 @@ void ant::move(){
 	switch (food)
 	{
 	case true:
-		if (position.x > 0 && position.y > 520 && position.x < 280 && position.y < 800){
+		if (position.x > 600 && position.y > 360 && position.x < 680 && position.y < 440){
 			food = false;
 		}
 		break;
 	case false:
-		if (position.x > 1000 && position.y > 120 && position.x < 1160 && position.y < 280){
+		if (position.x > 40 && position.y > 40 && position.x < 120 && position.y < 120){
 			food = true;
 		}
+		else if (position.x > 1000 && position.y > 600 && position.x < 1080 && position.y < 680){
+			food = true;
+		}
+		else if (position.x > 760 && position.y > 40 && position.x < 840 && position.y < 120){
+			food = true;
+		}
+		else if (position.x > 40 && position.y > 520 && position.x < 120 && position.y < 600){
+			food = true;
+		}
+
 		break;
 	}
 
@@ -61,7 +71,7 @@ void ant::changeVelocity(vector detv){
 	randv.y = 0.6 * sin(randa);
 
 	double h = 1;
-	double w = 0.5;
+	double w = 0.1;
 
 	velocity.x += h * w * detv.x + sqrt(h) * (1 - w) * randv.x;
 	velocity.y += h * w * detv.y + sqrt(h) * (1 - w) * randv.y;

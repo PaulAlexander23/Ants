@@ -3,19 +3,26 @@
 
 colony::colony()
 {
-	for (int i = 0; i < 320; i++){
+	/*for (int i = 0; i < 320; i++){
 		for (int j = 0; j < 200; j++){
-			grid[0][i][j] = 1000*exp(-(pow((double(i) -  50), 2) + pow((double(j) - 150), 2))/10000);
-			grid[1][i][j] = 1000*exp(-(pow((double(i) - 270), 2) + pow((double(j) -  50), 2))/10000);
+			grid[0][i][j]  = 500 * exp(-(pow((double(i) - 160), 2) + pow((double(j) - 100), 2)) / 10000);
+
+			grid[1][i][j]  = 1500 * exp(-(pow((double(i) -  20), 2) + pow((double(j) -  20), 2)) / 3000);
+			grid[1][i][j] += 1000 * exp(-(pow((double(i) - 260), 2) + pow((double(j) - 160), 2)) / 2000);
+			grid[1][i][j] +=  400 * exp(-(pow((double(i) - 200), 2) + pow((double(j) -  20), 2)) / 1000);
+			grid[1][i][j] += 1000 * exp(-(pow((double(i) -  20), 2) + pow((double(j) - 140), 2)) / 4000);
+
 			y[j] = 4 * j;
 		}
 		x[i] = 4 * i;
-	}
+	}*/
 
 }
 
 void colony::timeStep(){
 	vector detv;
+	
+
 	detv.x = 0;
 	detv.y = 0;
 	int j, k = 0;
@@ -29,37 +36,21 @@ void colony::timeStep(){
 			k++;
 		} k--;
 
-
-		//cout << "j" << j << ", k" << k << "\n";
-		if (j == 320){
-			detv.x = -1;
-			detv.y = 0;
+		switch (ants[i].food)
+		{
+		case true:
+			ants[i].timeStep(grids[0].Grad(j, k));
+			break;
+		case false:
+			ants[i].timeStep(grids[1].Grad(j, k));
+			break;
+		default:
+			break;
 		}
-		else if (k == 200){
-			detv.x = 0;
-			detv.y = -1;
-		}
-		else{
-			switch (ants[i].food)
-			{
-			case true:
-				detv.x = (grid[0][j + 1][k] - grid[0][j][k]) / (x[1] - x[0]);
-				detv.y = (grid[0][j][k + 1] - grid[0][j][k]) / (y[1] - y[0]);
-				break;
-			case false:
-				detv.x = (grid[1][j + 1][k] - grid[1][j][k]) / (x[1] - x[0]);
-				detv.y = (grid[1][j][k + 1] - grid[1][j][k]) / (y[1] - y[0]);
-				break;
-			default:
-				break;
-			}
-
-
-		}
-
 
 		ants[i].timeStep(detv);
 	}
+
 }
 
 int colony::draw(SDL_Renderer *renderer){
@@ -72,6 +63,8 @@ int colony::draw(SDL_Renderer *renderer){
 	}
 	return(out);
 }
+
+
 
 colony::~colony()
 {

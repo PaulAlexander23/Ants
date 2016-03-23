@@ -71,12 +71,14 @@
     <ClCompile Include="ant.cpp" />
     <ClCompile Include="colony.cpp" />
     <ClCompile Include="cSDL.cpp" />
+    <ClCompile Include="diffusionGrid.cpp" />
     <ClCompile Include="Source.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="ant.h" />
     <ClInclude Include="colony.h" />
     <ClInclude Include="cSDL.h" />
+    <ClInclude Include="diffusionGrid.h" />
     <ClInclude Include="Header1.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

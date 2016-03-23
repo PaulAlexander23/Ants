@@ -1,6 +1,7 @@
 #pragma once
 #include "Header1.h"
 #include "ant.h"
+#include "diffusionGrid.h"
 
 class colony
 {
@@ -13,6 +14,8 @@ public:
 private:
 	ant ants[100];
 	float grid[2][320][200];
+	diffusionGrid grids[2];
+
 	double x[320];
 	double y[200];
 
