@@ -6,7 +6,7 @@ diffusionGrid::diffusionGrid()
 {
 	for (int i = 0; i < 320; i++){
 		for (int j = 0; j < 200; j++){
-			grid[i][j] = 0;
+			grid[i][j] = 10;
 			y[j] = 4 * j;
 		}
 		x[i] = 4 * i;
@@ -24,14 +24,17 @@ void diffusionGrid::Diffuse(){
 
 	for (int i = 1; i < 320 - 1; i++){
 		for (int j = 1; j < 200 - 1; j++){
-			grid[i][j] = tempgrid[i][j];
+			grid[i][j] += tempgrid[i][j];
+			grid[i][j] = grid[i][j] / 100;
 		}
 	}
 
 }
 
 void diffusionGrid::Add(int i, int j){
+
 	grid[i][j] += 1;
+
 }
 
 vector diffusionGrid::Grad(int i, int j){
@@ -51,6 +54,42 @@ vector diffusionGrid::Grad(int i, int j){
 	return detv;
 }
 
+int diffusionGrid::draw(SDL_Renderer *renderer){
+	SDL_Rect rect;
+	rect.h = 4;
+	rect.w = 4;
+	
+	float max = 0;
+	float min = 7e37;
+
+	for (int i = 0; i < 320; i++){
+		for (int j = 0; j < 200; j++){
+			if (max < grid[i][j]){
+				max = grid[i][j];
+			}
+			if (min > grid[i][j])
+				min = grid[i][j];
+		}
+	}
+
+	printf("Max: %g Min: %g \n", max, min);
+
+	int out = 0;
+	for (int i = 0; i < 320; i++){
+		for (int j = 0; j < 200; j++){
+			rect.x = x[i] - 2;
+			rect.y = y[j] - 2;
+			SDL_SetRenderDrawColor(renderer, int(255.0 * ((grid[i][j] - min) / (max - min))), 255, 255, 255);
+			out = SDL_RenderFillRect(renderer,&rect);
+			if (out == -1){
+				return(out);
+			}
+
+		}
+	}
+
+	return(out);
+}
 
 diffusionGrid::~diffusionGrid()
 {

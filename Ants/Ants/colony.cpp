@@ -16,6 +16,12 @@ colony::colony()
 		}
 		x[i] = 4 * i;
 	}*/
+	for (int i = 0; i < 320; i++){
+		for (int j = 0; j < 200; j++){
+			y[j] = 4 * j;
+		}
+		x[i] = 4 * i;
+	}
 
 }
 
@@ -26,41 +32,48 @@ void colony::timeStep(){
 	detv.x = 0;
 	detv.y = 0;
 	int j, k = 0;
-	for (int i = 0; i < 100; i++){
-		j = 0; k = 0;
+	for (int K = 0; K < 2; K++){
+		for (int i = 0; i < 100; i++){
+			j = 0; k = 0;
 
-		while (ants[i].position.x > x[j] && j < 320){
-			j++;
-		} j--;
-		while (ants[i].position.y > y[k] && k < 200){
-			k++;
-		} k--;
+			while (ants[i].position.x > x[j] && j < 320){
+				j++;
+			} j--;
+			while (ants[i].position.y > y[k] && k < 200){
+				k++;
+			} k--;
 
-		switch (ants[i].food)
-		{
-		case true:
-			ants[i].timeStep(grids[0].Grad(j, k));
-			break;
-		case false:
-			ants[i].timeStep(grids[1].Grad(j, k));
-			break;
-		default:
-			break;
+
+			if (K == 0){
+				ants[i].timeStep(grids[1-ants[i].food].Grad(j, k));
+			}
+			else{
+				grids[ants[i].food].Add(j, k);
+			}
+
 		}
-
-		ants[i].timeStep(detv);
 	}
+
+	grids[0].Diffuse();
+	grids[1].Diffuse();
+
 
 }
 
 int colony::draw(SDL_Renderer *renderer){
+
 	int out = 0;
+	out = grids[0].draw(renderer);
+	if (out == -1){
+		return(out);
+	}
 	for (int i = 0; i < 100; i++){
 		out = ants[i].draw(renderer);
 		if (out == -1){
 			return(out);
 		}
 	}
+	
 	return(out);
 }
 

@@ -2,8 +2,10 @@
 
 
 ant::ant(){
-	position.x = rand() / double(RAND_MAX) * 1280;
-	position.y = rand() / double(RAND_MAX) * 800;
+	position.x = 640;
+	position.y = 400;
+	/*position.x = rand() / double(RAND_MAX) * 1280;
+	position.y = rand() / double(RAND_MAX) * 800;*/
 	double randa;
 	randa = 2 * M_PI * rand() / double(RAND_MAX);
 	velocity.x = cos(randa);

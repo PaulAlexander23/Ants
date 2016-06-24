@@ -12,6 +12,7 @@ public:
 	void Diffuse();
 	void Add(int i, int j);
 	vector Grad(int i, int j);
+	int draw(SDL_Renderer *renderer);
 
 	~diffusionGrid();
 };
