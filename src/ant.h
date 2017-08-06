@@ -4,7 +4,7 @@
 class ant
 {
 private:
-	double direction; // 0 =< direction < 2*pi
+	double direction; // 0 <= direction < 2*pi
 	short yard;
 public:
 	bool food;
@@ -12,9 +12,8 @@ public:
 	vector velocity;
 	ant();
 	ant(short x, short y);
-	void timeStep(vector detv);
-	void changeVelocity(vector detv);
+	void time_step(vector detv);
+	void change_velocity(vector detv);
 	void move();
 	int draw(SDL_Renderer *renderer);
 };
-

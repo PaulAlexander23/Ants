@@ -1,23 +1,19 @@
 #pragma once
 #include "main.h"
 #include "ant.h"
-#include "diffusionGrid.h"
+#include "scent.h"
+#include "zone.h"
 
 class colony
 {
 public:
 	colony();
-	void timeStep();
-	int draw(SDL_Renderer *renderer);
 	~colony();
+	void time_step(float ts);
+	int draw(SDL_Renderer *renderer);
 
 private:
-	ant ants[100];
-	diffusionGrid grids[2];
-
-	double x[320];
-	double y[200];
-
-
+	ant ants[200];
+	scent scents[2]; // 0 - home, 1 - food
+    zone zones[2]; // 0 - home, 1 - food
 };
-

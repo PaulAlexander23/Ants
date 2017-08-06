@@ -1,10 +1,11 @@
 //Simple ants
 
 #include "main.h"
-#include "cSDL.h"
+#include "graphics.h"
 #include "ant.h"
 #include "colony.h"
-#include "Timer.h"
+#include "timer.h"
+#include "zone.h"
 
 using namespace std;
 
@@ -19,7 +20,7 @@ int main(int argc, char **argv){
 	int SCREENWIDTH = 1280;
 
 	bool quit = false;
-	cSDL* oSDL = new cSDL(&quit, SCREENWIDTH, SCREENHEIGHT);
+	graphics* graphics1 = new graphics(&quit, SCREENWIDTH, SCREENHEIGHT);
 	SDL_Renderer *renderer;
 
 /*	const Uint32 USER_TIMER = SDL_RegisterEvents(1);
@@ -32,7 +33,7 @@ int main(int argc, char **argv){
 	Uint32 t = SDL_GetTicks();
 	Uint32 t_old = t;*/
 
-    Timer timer1(100);
+    timer timer1(100);
     SDL_Event ev;
 
 	//Setting up everything else
@@ -50,16 +51,6 @@ int main(int argc, char **argv){
 
 	//main loop
 	while (!quit){
-
-        /*t = SDL_GetTicks();
-		if (t > t_old + 50){
-            cout << "t \n";
-			SDL_PushEvent(&timer);
-			t_old = t;
-			cout << "tick \n";
-		}*/
-
-
 	    while(SDL_PollEvent(&ev))
         {
 		    switch(ev.type)
@@ -76,7 +67,7 @@ int main(int argc, char **argv){
                     cout<<"Space Bar Down"<<endl;
                     if(keyPressed.SPACE == false)
                     {
-                        timer1.ToggleTimer();
+                        timer1.toggle();
                         keyPressed.SPACE = true;
                     }
                 }
@@ -91,16 +82,16 @@ int main(int argc, char **argv){
                     }
                 }
             case SDL_USEREVENT:
-                colony1.timeStep();
+                colony1.time_step(0.1);
                 break;
 		    }
 	    }
-        oSDL->Begin();
-        renderer = oSDL->GetRenderer();
+        graphics1->begin();
+        renderer = graphics1->get_renderer();
         SDL_SetRenderDrawColor(renderer, 255, 255, 255, 255);
         SDL_RenderFillRect(renderer, NULL);
         colony1.draw(renderer);
-        oSDL->End();
+        graphics1->end();
 	}
 
 	return 0;
