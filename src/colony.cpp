@@ -43,12 +43,10 @@ int colony::draw(SDL_Renderer *renderer){
 		return(out);
 	}
 
-/*
 	out = scents[1].draw(renderer);
 	if (out == -1){
 		return(out);
 	}
-*/
 
 /*
     SDL_SetRenderDrawColor(renderer,100,0,0,100);
